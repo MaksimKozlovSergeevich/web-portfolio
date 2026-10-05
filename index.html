@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Blood Dev Studio — разработка технологичных, быстрых и визуально сильных веб-сайтов любой сложности. Лендинги, корпоративные сайты, интернет-магазины." />
 <title>Blood Dev Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Arial' font-weight='bold' fill='%23b8232a'>B</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,6 +29,50 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+
+/* --- Moving grid background --- */
+.bg-grid {
+  position: fixed;
+  inset: -50%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridMove 25s linear infinite;
+}
+@keyframes gridMove {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(48px, -48px); }
+}
+
+/* --- Scroll reveal --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1);
+}
+.reveal-stagger.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: .1s; }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: .2s; }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: .3s; }
+.reveal-stagger.visible > *:nth-child(5) { transition-delay: .4s; }
+.reveal-stagger.visible > *:nth-child(6) { transition-delay: .5s; }
+
 @keyframes heroFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -39,6 +85,10 @@ body {
   to {
     opacity: 1;
   }
+}
+@keyframes checkerMove {
+  from { background-position: center, center, 0 0; }
+  to   { background-position: center, center, 110px -110px; }
 }
 .hero {
   position: relative;
@@ -57,7 +107,7 @@ body {
     );
   background-size: auto, auto, 110px 110px;
   background-position: center, center, center;
-  animation: heroFadeIn 1.4s ease forwards;
+  animation: heroFadeIn 1.4s ease forwards, checkerMove 8s linear infinite;
 }
 .hero::after {
   content: "";
@@ -67,15 +117,6 @@ body {
   pointer-events: none;
   z-index: 6;
   mix-blend-mode: overlay;
-}
-.topbar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0.5rem clamp(1.2rem, 4vw, 3rem);
-  z-index: 10;
 }
 .hero__logo-box {
   position: absolute;
@@ -177,8 +218,11 @@ body {
   box-shadow: 0 40px 80px rgba(0,0,0,.65);
 }
 .card__eyebrow {
-  font-family: 'Caveat', cursive;
-  font-size: 1.55rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   color: var(--red);
   line-height: 1;
   margin-bottom: .55rem;
@@ -232,6 +276,8 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 16px 32px rgba(184,35,42,.55);
 }
+
+/* --- Pricing Section --- */
 .pricing-section {
   padding: clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 3rem);
   background: #090909;
@@ -259,11 +305,11 @@ body {
   color: var(--red);
 }
 .pricing-subtitle {
-  font-family: 'Caveat', cursive;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--cream);
-  opacity: 0.8;
-  margin-top: 0.4rem;
+  opacity: 0.6;
+  margin-top: 0.8rem;
+  font-weight: 400;
 }
 .pricing-grid {
   display: grid;
@@ -368,7 +414,7 @@ body {
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 .btn-order::after {
-  content: "→";
+  content: "\2192";
   transition: transform 0.3s ease;
 }
 .price-card:hover .btn-order {
@@ -379,6 +425,182 @@ body {
 .price-card:hover .btn-order::after {
   transform: translateX(4px);
 }
+
+/* --- Advantages Section --- */
+.advantages {
+  padding: clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 3rem);
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.05);
+  position: relative;
+  z-index: 8;
+}
+.advantages__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.advantages__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+.advantages__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  color: var(--cream);
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+.advantages__title span { color: var(--red); }
+.advantages__subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--cream);
+  opacity: 0.6;
+  margin-top: 0.8rem;
+}
+.advantages__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Shimmer effect on advantage cards --- */
+@keyframes shimmerSweep {
+  0%   { left: -150%; }
+  100% { left: 250%; }
+}
+.advantage-card {
+  background: #121212;
+  border: 1px solid rgba(255,255,255,.04);
+  border-radius: 20px;
+  padding: 2rem 1.8rem;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), border-color .4s ease, box-shadow .4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.advantage-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255,255,255,.06) 45%,
+    rgba(184,35,42,.12) 50%,
+    rgba(255,255,255,.06) 55%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.advantage-card:hover::after {
+  animation: shimmerSweep .8s ease forwards;
+}
+.advantage-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(184,35,42,.25);
+  box-shadow:
+    0 24px 48px rgba(0,0,0,.5),
+    0 0 30px rgba(184,35,42,.12);
+}
+.advantage-card > * {
+  position: relative;
+  z-index: 2;
+}
+.advantage-card__num {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.5rem;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 1rem;
+  opacity: .9;
+}
+.advantage-card__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: .6rem;
+}
+.advantage-card__text {
+  font-size: .85rem;
+  line-height: 1.5;
+  color: #a09a92;
+}
+
+/* --- Process Section --- */
+.process {
+  padding: clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 3rem);
+  background: #090909;
+  border-top: 1px solid rgba(255,255,255,.05);
+  position: relative;
+  z-index: 8;
+}
+.process__container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.process__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+.process__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  color: var(--cream);
+  text-transform: uppercase;
+  line-height: 0.9;
+}
+.process__title span { color: var(--red); }
+.process__subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--cream);
+  opacity: 0.6;
+  margin-top: 0.8rem;
+}
+.process__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.process-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  background: #121212;
+  border: 1px solid rgba(255,255,255,.04);
+  border-radius: 20px;
+  padding: 1.8rem 2rem;
+  transition: border-color .4s ease, box-shadow .4s ease;
+}
+.process-step:hover {
+  border-color: rgba(184,35,42,.25);
+  box-shadow: 0 20px 40px rgba(0,0,0,.4);
+}
+.process-step__num {
+  flex-shrink: 0;
+  font-family: 'Anton', sans-serif;
+  font-size: 2.2rem;
+  color: var(--red);
+  line-height: 1;
+  min-width: 3rem;
+}
+.process-step__body {
+  flex: 1;
+}
+.process-step__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: .4rem;
+}
+.process-step__text {
+  font-size: .85rem;
+  line-height: 1.5;
+  color: #a09a92;
+}
+
 @media (max-width: 1024px) {
   .hero {
     min-height: 100vh;
@@ -404,16 +626,20 @@ body {
   .pricing-grid {
     grid-template-columns: 1fr;
   }
+  .advantages__grid {
+    grid-template-columns: 1fr;
+  }
+  .process-step {
+    flex-direction: column;
+    gap: .8rem;
+  }
 }
 </style>
 </head>
 <body>
+  <div class="bg-grid"></div>
+
   <section class="hero">
-    <div class="topbar">
-      <div class="topbar__brand">
-        <div class="topbar__dot"></div>
-      </div>
-    </div>
     <div class="hero__logo-box">
       <h1 class="hero__title">BLOOD DEV</h1>
       <div class="hero__script">Studio</div>
@@ -428,32 +654,33 @@ body {
       <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80" alt="Программирование">
     </div>
     <div class="drink">
-      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=200&0" alt="Рабочая зона">
+      <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=200&q=80" alt="Рабочая зона">
     </div>
     <div class="card">
-      <div class="card__eyebrow">Привет, клиент!</div>
+      <div class="card__eyebrow">Веб-разработка под ключ</div>
       <p class="card__text">
-        Мы создаем технологичные, быстрые и визуально сильные веб-сайты любой сложности для клиентов по всему миру.
+        Создаем технологичные, быстрые и визуально сильные сайты любой сложности для клиентов по всему миру.
       </p>
       <div class="card__price">
         <strong>100%</strong>
         <span>Удаленная работа</span>
       </div>
-      <a href="#pricing" class="btn">Посмотреть услуги</a>
+      <a href="#pricing" class="btn">Смотреть услуги</a>
     </div>
   </section>
+
   <section class="pricing-section" id="pricing">
     <div class="pricing-container">
-      <div class="pricing-header">
-        <h2 class="pricing-title">Наш <span>Прайс</span></h2>
-        <p class="pricing-subtitle">Специальные цены для формирования мощного портфолио</p>
+      <div class="pricing-header reveal">
+        <h2 class="pricing-title">Стоимость <span>работы</span></h2>
+        <p class="pricing-subtitle">Фиксированные цены без скрытых платежей. Точная смета согласовывается до старта.</p>
       </div>
-      <div class="pricing-grid">
+      <div class="pricing-grid reveal-stagger">
         <div class="price-card">
           <div>
             <div class="price-card__tag">Быстрый старт</div>
             <h3 class="price-card__title">Landing Page</h3>
-            <p class="price-card__desc">Эффектные одностраничные сайты для уверенной презентации вашего продукта, услуги или личного бренда.</p>
+            <p class="price-card__desc">Одностраничные сайты для презентации продукта, услуги или личного бренда. Адаптивная верстка, SEO-оптимизация базового уровня.</p>
           </div>
           <div class="price-card__meta">
             <div class="price-card__row">
@@ -462,7 +689,7 @@ body {
             </div>
             <div class="price-card__row">
               <span class="price-card__label">Стоимость</span>
-              <span class="price-card__price">3 500 ₽</span>
+              <span class="price-card__price">3 500 &#8381;</span>
             </div>
             <a href="https://www.avito.ru/brand/i409583244" target="_blank" class="btn-order">Заказать</a>
           </div>
@@ -471,7 +698,7 @@ body {
           <div>
             <div class="price-card__tag">Для бизнеса</div>
             <h3 class="price-card__title">Corporate Site</h3>
-            <p class="price-card__desc">Солидные многостраничные решения для компаний, создающие надежный и премиальный имидж вашего бренда.</p>
+            <p class="price-card__desc">Многостраничные решения для компаний. Структурированная архитектура, корпоративный стиль, интеграция с CRM и аналитикой.</p>
           </div>
           <div class="price-card__meta">
             <div class="price-card__row">
@@ -480,7 +707,7 @@ body {
             </div>
             <div class="price-card__row">
               <span class="price-card__label">Стоимость</span>
-              <span class="price-card__price">7 500 ₽</span>
+              <span class="price-card__price">7 500 &#8381;</span>
             </div>
             <a href="https://www.avito.ru/brand/i409583244" target="_blank" class="btn-order">Заказать</a>
           </div>
@@ -489,7 +716,7 @@ body {
           <div>
             <div class="price-card__tag">Продажи</div>
             <h3 class="price-card__title">Online Store</h3>
-            <p class="price-card__desc">Современные интернет-магазины с функциональной корзиной, удобным каталогом и интеграцией платежей.</p>
+            <p class="price-card__desc">Интернет-магазины с корзиной, каталогом товаров, фильтрами, интеграцией платежных систем и системами доставки.</p>
           </div>
           <div class="price-card__meta">
             <div class="price-card__row">
@@ -498,7 +725,7 @@ body {
             </div>
             <div class="price-card__row">
               <span class="price-card__label">Стоимость</span>
-              <span class="price-card__price">14 500 ₽</span>
+              <span class="price-card__price">14 500 &#8381;</span>
             </div>
             <a href="https://www.avito.ru/brand/i409583244" target="_blank" class="btn-order">Заказать</a>
           </div>
@@ -506,5 +733,100 @@ body {
       </div>
     </div>
   </section>
+
+  <section class="advantages" id="advantages">
+    <div class="advantages__container">
+      <div class="advantages__header reveal">
+        <h2 class="advantages__title">Почему <span>мы</span></h2>
+        <p class="advantages__subtitle">Шесть принципов, на которых построена работа студии</p>
+      </div>
+      <div class="advantages__grid reveal-stagger">
+        <div class="advantage-card">
+          <div class="advantage-card__num">01</div>
+          <div class="advantage-card__title">Скорость без потери качества</div>
+          <div class="advantage-card__text">Четкое планирование этапов позволяет запускать проекты в срок. Лендинги — от 5 дней, корпоративные сайты — от двух недель.</div>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-card__num">02</div>
+          <div class="advantage-card__title">Адаптивная верстка</div>
+          <div class="advantage-card__text">Каждый проект корректно отображается на десктопе, планшете и смартфоне. Тестирование на реальных устройствах перед сдачей.</div>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-card__num">03</div>
+          <div class="advantage-card__title">SEO-оптимизация</div>
+          <div class="advantage-card__text">Семантическая разметка, корректные мета-теги, оптимизация скорости загрузки. Сайт готов к индексации поисковыми системами.</div>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-card__num">04</div>
+          <div class="advantage-card__title">Чистый код</div>
+          <div class="advantage-card__text">Валидная, структурированная и документированная кодовая база. При необходимости проект легко передать другому разработчику.</div>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-card__num">05</div>
+          <div class="advantage-card__title">Техническая поддержка</div>
+          <div class="advantage-card__text">После сдачи проекта доступна поддержка: обновление контента, резервное копирование, мониторинг доступности сайта.</div>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-card__num">06</div>
+          <div class="advantage-card__title">Фиксированная стоимость</div>
+          <div class="advantage-card__text">Цена согласовывается до начала работ и не меняется в процессе. Все правки в рамках ТЗ включены в стоимость.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="process__container">
+      <div class="process__header reveal">
+        <h2 class="process__title">Этапы <span>работы</span></h2>
+        <p class="process__subtitle">Прозрачный процесс от первого контакта до запуска проекта</p>
+      </div>
+      <div class="process__steps reveal-stagger">
+        <div class="process-step">
+          <div class="process-step__num">01</div>
+          <div class="process-step__body">
+            <div class="process-step__title">Бриф и анализ</div>
+            <div class="process-step__text">Обсуждение задач, целевой аудитории и требований. Анализ конкурентов и аналогов в нише. Формирование технического задания.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">02</div>
+          <div class="process-step__body">
+            <div class="process-step__title">Прототип и дизайн</div>
+            <div class="process-step__text">Разработка структуры страниц, прототипа интерфейса и визуальной концепции. Согласование макетов перед версткой.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">03</div>
+          <div class="process-step__body">
+            <div class="process-step__title">Верстка и программирование</div>
+            <div class="process-step__text">Адаптивная верстка, интеграция backend-функциональности, подключение API и сторонних сервисов. Тестирование на всех этапах.</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="process-step__num">04</div>
+          <div class="process-step__body">
+            <div class="process-step__title">Запуск и поддержка</div>
+            <div class="process-step__text">Размещение на хостинге, настройка домена, финальное тестирование. Передача доступов и инструкций. Дальнейшее сопровождение по запросу.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  var els = document.querySelectorAll('.reveal, .reveal-stagger');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
 </body>
 </html>
